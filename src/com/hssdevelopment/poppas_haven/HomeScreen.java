@@ -21,10 +21,13 @@ import android.widget.Button;
 public class HomeScreen extends Activity implements OnClickListener
 {
 	//UI Controls
-	Button getDirections;
-	Button startOrder;
-	Map coffeeMap;
-	List categoryList;
+	private Button getDirections;
+	private Button startOrder;
+	private Map coffeeMap;
+	private List categoryList;
+	
+	//Address of Poppa's Haven
+	public static final String COFFEE_ADDRESS = "800 NW Murray Blvd Portland, OR 97229";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -45,15 +48,13 @@ public class HomeScreen extends Activity implements OnClickListener
 	@Override
 	public void onClick(View v) 
 	{
+		//msatpathy.wordpress.com/android/search-google-map-using-intent/
 		if (v == getDirections)
 		{
 			//Pass Request to Google Maps API
-			/*
-			String uri = "45.5252201, -122.814744";
-			Intent i = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
-			i.setClassName("com.google.android.apps.maps", "com.goog.android.maps.MapsActivity"); 
-			startActivity(i);	
-			*/
+			Intent geoIntent = new Intent(android.content.Intent.ACTION_VIEW,
+										   Uri.parse("geo:o,o?q=" + COFFEE_ADDRESS));
+			startActivity(geoIntent);
 		}
 		
 		else if (v == startOrder)

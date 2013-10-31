@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Poppa\'s Haven</string>
-    <string name="place_order">Place New Order:</string>
+    <string name="place_order">Place New Order</string>
     <string name="get_directions">Get Directions&#160;&#160;&#160;&#160;</string>
     <string name="select_drink">Select Drink:</string>
     <string name="main_menu_title">Pappa\'s Haven</string>

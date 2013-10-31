@@ -153,8 +153,7 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
             		cb.setChecked(true);
             		expListAdapter.setActiveCheckBox(groupPosition, childPosition, data);
             	}
-            	
-            	Toast.makeText(v.getContext(), "Routed through click listener", Toast.LENGTH_SHORT).show();
+            
             	expListAdapter.notifyDataSetChanged();
             	return true;
             }

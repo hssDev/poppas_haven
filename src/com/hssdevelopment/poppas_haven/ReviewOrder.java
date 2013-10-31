@@ -61,6 +61,7 @@ public class ReviewOrder extends Activity implements OnClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
+		//Inflate UI
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.review_order);
 		
