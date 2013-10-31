@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:background="@android:color/background_dark">
+            <Button
+            android:id="@+id/next_button"
+            android:background="@drawable/gradient_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dip"
+            android:text="@string/review_order" 
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+            <TextView 
+               android:id="@+id/order_status"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:layout_margin="15dp"
+               android:textSize="14dp"
+               android:text="Order Status: "
+               android:textColor="@android:color/holo_green_dark"/>
+   
+</LinearLayout>

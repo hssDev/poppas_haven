@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Poppa\'s Haven</string>
+    <string name="place_order">Place New Order:</string>
+    <string name="get_directions">Get Directions&#160;&#160;&#160;&#160;</string>
+    <string name="select_drink">Select Drink:</string>
+    <string name="main_menu_title">Pappa\'s Haven</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="customize_order">Customize Order</string>
+    <string name="twelve_ounces">12 Oz</string>
+    <string name="sixteen_ounces">16 Oz</string>
+    <string name="twenty_ounces">20 Oz</string>
+    <string name="twentyfour_ounces">24 Oz</string>
+    <string name="select_size">Select Size</string>
+    <string name="hot_or_iced">Hot or Iced?</string>
+    <string name="hot">Hot&#160;</string>
+    <string name="iced">Iced</string>
+    <string name="review_order">Review Order</string>
+    <string name="order_options_message">Size and Temperature Options</string>
+    <string name="order_review_message">Review Order</string>
+    <string name="send_order">Send Order</string>
+    <string name="select_milk">Select Milk:</string>
+    <string name="two_percent">2%(Regular)</string>
+    <string name="nonfat">Non Fat&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="whole">Whole&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="soy">Soy&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+	<string name="breve">Breve&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+	<string name="hemp">Hemp&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+	<string name="comments_title">Enter Additional Comments</string>
+	<string name="comments_hint">Example: Not too hot, Extra Shot, Room for Cream</string>
+	<string name="name_title">Enter Name for the Order</string>
+	<string name="name_hint">Your Name Here</string>
+	<string name="arrival_time">I Will Arrive In:</string>
+	<string name="minutes">Minutes</string>
+	<string name="time_hint">15</string>
+	<string name="select_flavor">Add Flavor to Beverage?</string>
+	<string name="loading_message">Loading...</string>
+	<string name="description">coffee cup</string>
+	<string name="select_frappe_base">Select Frappe Base:</string>
+	<string name="select_beverage">Select Beverage</string>
+</resources>
