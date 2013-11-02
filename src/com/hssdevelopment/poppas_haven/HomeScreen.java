@@ -18,16 +18,23 @@ import android.widget.Button;
  * Copyright (c) 2013 Michael Hensley
  */
 
+
+/*
+ * Home Screen Class for Poppas Haven Application
+ * Purpose: Direct users to either a mobile order system implemented
+ * in the application or to send address coordinates to the Google Map
+ * API in order to give customer directions to the store. 
+ */
 public class HomeScreen extends Activity implements OnClickListener
 {
 	//UI Controls
 	private Button getDirections;
 	private Button startOrder;
-	private Map coffeeMap;
-	private List categoryList;
 	
 	//Address of Poppa's Haven
-	public static final String COFFEE_ADDRESS = "800 NW Murray Blvd Portland, OR 97229";
+	private static final String POPPAS_HAVEN_ADDRESS = "800 NW Murray Blvd Portland, OR 97229";
+	//Coordinate prefix for Google Maps API
+	private static final String COORDINATE_PREFIX = "geo:o,o?q=";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -45,22 +52,27 @@ public class HomeScreen extends Activity implements OnClickListener
 		
 	}
 
+	/*onClick Purpose: Provide Button functionality for main screen buttons
+	 * getDirections and startOrder. 
+	 */
 	@Override
 	public void onClick(View v) 
 	{
+		//If User clicks on directions button, launch Google Maps Activity to give directions
 		//msatpathy.wordpress.com/android/search-google-map-using-intent/
 		if (v == getDirections)
 		{
 			//Pass Request to Google Maps API
-			Intent geoIntent = new Intent(android.content.Intent.ACTION_VIEW,
-										   Uri.parse("geo:o,o?q=" + COFFEE_ADDRESS));
-			startActivity(geoIntent);
+			Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW,
+							   Uri.parse(COORDINATE_PREFIX + POPPAS_HAVEN_ADDRESS));
+			startActivity(mapIntent);
 		}
 		
+		//Else launch ordering system's first activity, UI_Category_Menu.class
 		else if (v == startOrder)
 		{
-			Intent i = new Intent(v.getContext(), UI_Category_Menu.class);
-			startActivity(i);
+			Intent new_order = new Intent(v.getContext(), UI_Category_Menu.class);
+			startActivity(new_order);
 		}
 		
 	}
