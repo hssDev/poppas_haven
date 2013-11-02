@@ -31,6 +31,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*Class UI_Category_Menu
+ * Purpose: Download Menu Categories and possible beverages via HSS Development Server
+ * After Download, Display drink categories for the user and allow them to select
+ * a drink category. When user selects a category, pass new beverage data structure
+ * to the next activity that will contain the new beverage. 
+ * HashMap<String, String> currentOrder structure:
+ * category = category the beverage is from 
+ * name = name of Beverage
+ * modifier = any possible modifiers for beverage
+ * size = size of the beverage (12, 16, 20, 24)
+ * milk = type of milk (if any) for this beverage
+ * drinkTemperature = hot or iced beverage
+ * comments = additional comments from the comments field in review activity
+ */
 public class UI_Category_Menu extends ListActivity 
 {
 	//Blank Field Constant for current order initialization
@@ -38,8 +52,10 @@ public class UI_Category_Menu extends ListActivity
 	
 	//UI Controls
 	private ListView list;
-	private MenuAdapter ma;
 	private View footer;
+	
+	//Menu Categories List Adapter
+	private MenuAdapter menuCategoriesAdapter;
 	
 	//List View Child Click Handler
 	private OnItemClickListener listClickHandler;
@@ -51,6 +67,7 @@ public class UI_Category_Menu extends ListActivity
 	private LinkedHashMap<String, List<String>> menuData;
 	
 	//Current Drink Order Data Structure
+	//This structure will be passed between order-related activities
 	private HashMap<String, String> currentOrder;
 	
 	@Override
@@ -68,9 +85,11 @@ public class UI_Category_Menu extends ListActivity
 		menuData = new LinkedHashMap<String, List<String>>();
 		
 		//Load initial message onto menu until Menu Data is downloaded from server
+		//and updated
 		menuCategories.add("Loading...");
 		
 		//Sample Descriptions to be completed by staff at Poppa's Haven
+		//This is place holder data until descriptions are created
 		HashMap<String, String> descriptions = new HashMap<String, String>();
 		descriptions.put("House Coffee", "Our Delicious Brewed Coffee");
 		descriptions.put("Espresso", "Fresh Ground Espresso");
@@ -80,7 +99,7 @@ public class UI_Category_Menu extends ListActivity
 		descriptions.put("Other", "Everything else");
 		
 		//Menu Adapter to populate list
-		ma = new MenuAdapter(this, descriptions, menuCategories);
+		menuCategoriesAdapter = new MenuAdapter(this, descriptions, menuCategories);
 		
 		//Acquire reference to list
 		list = (ListView)getListView();
@@ -115,8 +134,8 @@ public class UI_Category_Menu extends ListActivity
 		list.addFooterView(footer);
 		
 		//Create new adapter and inflate it with loading message 
-		ma = new MenuAdapter(this, descriptions, menuCategories);
-		list.setAdapter(ma);
+		menuCategoriesAdapter = new MenuAdapter(this, descriptions, menuCategories);
+		list.setAdapter(menuCategoriesAdapter);
 		
 		//Spawn thread and download data from hssdevelopment server via
 		//http post request
@@ -129,9 +148,9 @@ public class UI_Category_Menu extends ListActivity
 	//containing drink information.
 	private void initializeDrinkOrder(HashMap<String, String> currentOrder) 
 	{
+		currentOrder.put("category",BLANK_FIELD);
 		currentOrder.put("name", BLANK_FIELD);
 		currentOrder.put("modifier", BLANK_FIELD);
-		currentOrder.put("drink", BLANK_FIELD);
 		currentOrder.put("size", BLANK_FIELD);
 		currentOrder.put("milk", BLANK_FIELD);
 		currentOrder.put("drinkTemperature", BLANK_FIELD);
@@ -171,8 +190,9 @@ public class UI_Category_Menu extends ListActivity
 			        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 			        nameValuePairs.add(new BasicNameValuePair("id", "menu"));
 			        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			        
+			    
 					HttpResponse execute = client.execute(httpPost);
+					
 					//Get content from the server and process data into containers
 					InputStream content = execute.getEntity().getContent();
 					processStream(content);
@@ -218,21 +238,26 @@ public class UI_Category_Menu extends ListActivity
 			//Remove loading message
 			menuCategories.remove("Loading...");
 			//Set list adapter
-			ma.setList(menuCategories);
+			menuCategoriesAdapter.setList(menuCategories);
 			//Call the UI to redraw the list
-			ma.notifyDataSetChanged();
+			menuCategoriesAdapter.notifyDataSetChanged();
 		}
 		
 		private void processStream(InputStream inputStream) 
 		{		
 			XmlPullParserFactory factory;
+			//Strings to temporarily hold parsed data
 			String name = "";
 			String category = "";
+			//Containers used to structure and hold data
+			//serverData will contain a map of all the categories from the
+			//server as keys and each key will map to a list of beverages
 			serverData = new LinkedHashMap<String, List<String>>();
 			categories = new ArrayList<String>();
 			
 			try 
 			{
+				//Set up pull parser
 				factory = XmlPullParserFactory.newInstance();
 				factory.setNamespaceAware(true);
 				XmlPullParser xpp = factory.newPullParser();

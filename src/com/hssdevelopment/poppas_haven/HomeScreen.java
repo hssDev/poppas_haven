@@ -62,6 +62,7 @@ public class HomeScreen extends Activity implements OnClickListener
 		//msatpathy.wordpress.com/android/search-google-map-using-intent/
 		if (v == getDirections)
 		{
+			
 			//Pass Request to Google Maps API
 			Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW,
 							   Uri.parse(COORDINATE_PREFIX + POPPAS_HAVEN_ADDRESS));
