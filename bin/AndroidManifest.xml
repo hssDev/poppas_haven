@@ -12,10 +12,11 @@
         android:allowBackup="true"
         android:icon="@drawable/coffee_cup"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.hssdevelopment.poppas_haven.HomeScreen"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,6 +25,7 @@
         <activity
             android:name="com.hssdevelopment.poppas_haven.UI_Drink_Menu"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.HomeScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -40,6 +42,7 @@
         <activity
             android:name="com.hssdevelopment.poppas_haven.Drink_Menu"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.HomeScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -48,6 +51,7 @@
         <activity
             android:name="com.hssdevelopment.poppas_haven.OrderOptions"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.Drink_Menu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -56,6 +60,7 @@
         <activity
             android:name="com.hssdevelopment.poppas_haven.MilkOptions"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.Drink_Menu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -64,6 +69,7 @@
        <activity
             android:name="com.hssdevelopment.poppas_haven.ReviewOrder"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.Drink_Menu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -72,6 +78,7 @@
                <activity
             android:name="com.hssdevelopment.poppas_haven.UI_Milk_Options"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.Drink_Menu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -80,6 +87,7 @@
             <activity
             android:name="com.hssdevelopment.poppas_haven.UI_Hot_Iced"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.Drink_Menu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -88,6 +96,7 @@
             <activity
             android:name="com.hssdevelopment.poppas_haven.UI_Sauce_Syrup_Menu"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" 
             android:parentActivityName="com.hassdevelopment.poppas_haven.Drink_Menu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

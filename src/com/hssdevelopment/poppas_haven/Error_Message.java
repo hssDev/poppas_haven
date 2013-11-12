@@ -8,7 +8,6 @@ import android.content.DialogInterface.OnClickListener;
 /*Purpose: Error Message can be invoked in an activity to display 
  * an error message in a dialog box to the user by passing to this class the
  * message string and the current activity context, and calling the showErrorMessage function.
- * Immediately after use, the calling activity should call finish() to close the activity.
  */
 public class Error_Message 
 {

@@ -3,6 +3,7 @@ package com.hssdevelopment.poppas_haven;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -42,16 +43,6 @@ public class UI_Milk_Options extends ListActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_milk_options);
 		context = this;
-		
-		//Initialize all Milk Options locally
-		//This will be replaced by server data
-		milkOptions = new ArrayList<String>();
-		milkOptions.add("Regular(2%)");
-		milkOptions.add("Non-Fat");
-		milkOptions.add("Whole");
-		milkOptions.add("Soy");
-		milkOptions.add("Hemp");
-		milkOptions.add("Breve");
 
 		//Get reference to list
 		list = (ListView)getListView();
@@ -68,10 +59,32 @@ public class UI_Milk_Options extends ListActivity
 			catch (NullPointerException e)
 			{
 				e.printStackTrace();
-				Toast.makeText(context, "An Error has Occured Loading Menu", Toast.LENGTH_LONG).show();
+				Error_Message em = new Error_Message((Activity) context, "An Error has occured");
+				em.showErrorMessage();
 			}
 		}
 		
+		//Initialize all Milk Options locally
+		//This will be replaced by server data
+		
+		milkOptions = new ArrayList<String>();
+		//If drink category = blended, add Regular and Dairy Free Options
+		
+		if(currentOrder.get("category_name").equals("Blended"))
+		{
+			milkOptions.add("Regular Frappe Base");
+			milkOptions.add("Dairy Free Frappe Base");
+		}
+		
+		else
+		{
+			milkOptions.add("Regular(2%)");
+			milkOptions.add("Non-Fat");
+			milkOptions.add("Whole");
+			milkOptions.add("Soy");
+			milkOptions.add("Hemp");
+			milkOptions.add("Breve");
+		}
 		//Set list click handler for Milk Options
 		//This will start a new activity when it is finished. 
 		listClickHandler = new OnItemClickListener(){

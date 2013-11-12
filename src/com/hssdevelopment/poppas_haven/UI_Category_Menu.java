@@ -112,6 +112,7 @@ public class UI_Category_Menu extends ListActivity
 			{
 				TextView category = (TextView)child.findViewById(R.id.drink_name);
 				String category_name = category.getText().toString();
+				currentOrder.put("category_name", category_name);
 				
 				//Create New Intent and adding the following to the next activity:
 				//Name of the category selected to map to appropriate drink
@@ -148,7 +149,7 @@ public class UI_Category_Menu extends ListActivity
 	//containing drink information.
 	private void initializeDrinkOrder(HashMap<String, String> currentOrder) 
 	{
-		currentOrder.put("category",BLANK_FIELD);
+		currentOrder.put("category_name",BLANK_FIELD);
 		currentOrder.put("name", BLANK_FIELD);
 		currentOrder.put("modifier", BLANK_FIELD);
 		currentOrder.put("size", BLANK_FIELD);

@@ -34,7 +34,6 @@ public class ReviewOrder extends Activity implements OnClickListener
 	private String drinkName;
 	private String comments;
 	private String milk;
-	private String hotOrIced;
 	private String minutesToArrival;
 	private String drinkModifier;
 	private String drinkSize;
@@ -107,9 +106,11 @@ public class ReviewOrder extends Activity implements OnClickListener
 		//Set final order field
 		try
 		{
-			finalOrder.setText(drinkSize + " " + drinkTemperature +
-								"\n" + milk + " " + drinkName + "\n" +
-								"Modifiers: " + drinkModifier);
+			finalOrder.setText ( drinkName + "\n" +
+								 "Drink Size: " + drinkSize + "\n"
+						       + "Drink Temperature: " + drinkTemperature + "\n"
+							   + "Milk: " + milk + "\n" +
+								 "Modifiers: " + drinkModifier);
 		}
 		
 		catch(NullPointerException e)

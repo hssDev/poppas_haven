@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -87,7 +88,8 @@ public class UI_Drink_Menu extends ListActivity
 				//Get current order
 				currentOrder = (HashMap<String, String>) extras.getSerializable("current_order");
 				
-				//Set name of list
+				//Set List Title - List Title is the name of the 
+				//category that the user selected.
 				listTitle.setText(list_title);
 				
 				//Set drinkOptions to appropriate mapping from menu_data
@@ -97,8 +99,8 @@ public class UI_Drink_Menu extends ListActivity
 			//main screen
 			catch(NullPointerException e)
 			{
-				Toast.makeText(context, "An Error has occured", Toast.LENGTH_LONG).show();
-				finish();
+				Error_Message em = new Error_Message((Activity) context, "An Error has occured");
+				em.showErrorMessage();
 			}
 		}
 		
@@ -106,42 +108,44 @@ public class UI_Drink_Menu extends ListActivity
 		listClickHandler = new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View child, int position, long pos) 
-			{
+			{ 
 				//Get name of the drink that was passed
 				TextView category = (TextView)child.findViewById(R.id.drink_name);
 				drinkName = category.getText().toString();
 				
-				//Build new alert Dialog box to ask if the beverage is hot or iced
-				hotColdBuilder = new AlertDialog.Builder(context);
-				hotColdBuilder.setTitle("Hot or Iced?");
+				//If beverage is Espresso beverage, send user to Review Order
+				//Screen per menu flow control document
 				
-				//Assign buttons to different options
-				hotColdBuilder.setPositiveButton("Iced", new DialogInterface.OnClickListener() 
-			    {
-					//If user selects iced option- insert iced into current order
-					//and launch size option dialogue box with Iced = true;
-					@Override
-					 public void onClick(DialogInterface dialog, int which) 
-					 {
-						currentOrder.put("drinkTemperature", "Iced");
-						UI_Drink_Menu.this.buildSizeOptions(true);
-					 }
-			    });  
-				
-				hotColdBuilder.setNegativeButton("Hot", new DialogInterface.OnClickListener() 
+				String drinkCategoryName = listTitle.getText().toString();
+				if(drinkCategoryName.equals("Espresso"))
 				{
-				    @Override
-				     public void onClick(DialogInterface dialog, int which) 
-				     {
-				    	//If user selects hot option- insert hot into current order
-				    	//and launch size option dialogue box with Iced = false;
-				    	currentOrder.put("drinkTemperature", "Hot");
-				    	UI_Drink_Menu.this.buildSizeOptions(false);
-				     }
-			    });
+					//Create new intent
+					Intent i = new Intent(context, ReviewOrder.class);
+					//Put drink into currentOrder container
+					currentOrder.put("name", drinkName);
+					//Put drink size into currentOrder container
+					currentOrder.put("size", "12 oz");
+					//Put drink Temperature into currentOrder container
+					currentOrder.put("drinkTemperature", "Hot");
+					
+					i.putExtra("current_order", currentOrder);
+					startActivity(i);
+					finish();
+				}
 				
-				//Show dialogue box
-				hotColdBuilder.show();
+				//If the drink category is blended, call buildSizeOptions with a call 
+				//To true (Iced option)
+				if(drinkCategoryName.equals("Blended"))
+				{
+					currentOrder.put("drinkTemperature", "Iced");
+					UI_Drink_Menu.this.buildSizeOptions(true);
+				}
+				
+				//Else build dialog box to show hot or cold options:
+				else
+				{
+					buildHotIcedOptions();
+				}
 			}
 		};
 		
@@ -155,6 +159,63 @@ public class UI_Drink_Menu extends ListActivity
 		//Set list adapter
 		ma = new MenuAdapter(this, descriptions, drinkOptions);
 		list.setAdapter(ma);
+	}
+
+	/*This method builds the first dialogue box, hot or iced options, the user sees after selecting a
+	 * beverage and launches the next dialogue box after the user has made their selection
+	 * 
+	 */
+	protected void buildHotIcedOptions()
+	{
+	//Take care of the special cases in Other: Steamer, Hot Chocolate(Hot By Default)
+	//And Italian Soda (Iced By Default)
+		if(drinkName.equals("Hot Chocolate") || drinkName.equals("Steamer"))
+		{
+			currentOrder.put("drinkTemperature", "Hot");
+			UI_Drink_Menu.this.buildSizeOptions(false);
+		}
+		
+		//Set Italian Soda to default to iced
+		else if(drinkName.equals("Italian Soda"))
+		{
+			currentOrder.put("drinkTemperature", "Iced");
+			UI_Drink_Menu.this.buildSizeOptions(true);
+		}
+		
+		else
+		{
+	// Build new alert Dialog box to ask if the beverage is hot
+	// or iced
+			hotColdBuilder = new AlertDialog.Builder(context);
+			hotColdBuilder.setTitle("Hot or Iced?");
+
+	
+	// Assign buttons to different options
+			hotColdBuilder.setPositiveButton("Iced", new DialogInterface.OnClickListener(){
+				// If user selects iced option- insert iced into current order
+				// and launch size option dialogue box with Iced = true;
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					currentOrder.put("drinkTemperature", "Iced");
+					UI_Drink_Menu.this.buildSizeOptions(true);
+				}
+				});
+
+			hotColdBuilder.setNegativeButton("Hot", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,int which) 
+				{
+					// If user selects hot option- insert hot into current order
+					// and launch size option dialogue box with Iced = false;
+					currentOrder.put("drinkTemperature", "Hot");
+					UI_Drink_Menu.this.buildSizeOptions(false);
+				}
+			});
+		
+	// Show dialogue box
+			hotColdBuilder.show();
+		}
 	}
 	/*This method builds a second dialogue box and launches the next menu option
 	 * activity. It is called from the onChildClick listener in this activity.
@@ -183,8 +244,15 @@ public class UI_Drink_Menu extends ListActivity
 					@Override
 					public void onClick(DialogInterface dialog, int which) 
 					{
-						//Create new intent
-						Intent i = new Intent(context, UI_Milk_Options.class);
+						String categoryName = listTitle.getText().toString();
+						Intent i;
+						//If the category of the drink is from Classics or Blended
+						//Start Milk Options Activity
+						if(categoryName.equals("Classics") || categoryName.equals("Blended"))
+							i = new Intent(context, UI_Milk_Options.class);
+						//Create new intent to go directly to Sauce_Syrup Activity
+						else
+							i = new Intent(context, UI_Sauce_Syrup_Menu.class);
 						//Put drink into currentOrder container
 						currentOrder.put("name", drinkName);
 						//Put drink size into currentOrder container
@@ -192,6 +260,7 @@ public class UI_Drink_Menu extends ListActivity
 						
 						i.putExtra("current_order", currentOrder);
 						startActivity(i);
+						finish();
 					}
 				});
 		sizeBuilder.show();
