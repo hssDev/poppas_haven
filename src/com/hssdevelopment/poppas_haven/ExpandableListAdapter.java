@@ -99,17 +99,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	    }
 	 
 	    public View getGroupView(int groupPosition, boolean isExpanded,
-	            View convertView, ViewGroup parent) {
+	            				 View convertView, ViewGroup parent) 
+	    {
 	        String parentName = (String) getGroup(groupPosition);
-	        if (convertView == null) {
-	            LayoutInflater infalInflater = (LayoutInflater) context
-	                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	            convertView = infalInflater.inflate(R.layout.group_item,
-	                    null);
+	        if (convertView == null) 
+	        {
+	            LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	            convertView = infalInflater.inflate(R.layout.group_item, null);
 	        }
+	        
 	        TextView item = (TextView) convertView.findViewById(R.id.category);
 	        item.setTypeface(null, Typeface.BOLD);
 	        item.setText(parentName);
+	        
 	        return convertView;
 	    }
 	 

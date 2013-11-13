@@ -31,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Drink Name"
         android:textColor="#040404"
         android:typeface="sans"
         android:textSize="20dip"
@@ -45,8 +44,7 @@
         android:textColor="#343434"
         android:textSize="14dip"
         android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:text="Description of Beverage"/>
+        android:layout_toRightOf="@+id/thumbnail"/>
  
  
      <!-- Rightend Arrow -->

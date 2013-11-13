@@ -178,6 +178,7 @@ public class ReviewOrder extends Activity implements OnClickListener
 					{
 						Intent i = new Intent(v.getContext(), HomeScreen.class);
 						startActivity(i);
+						finish();
 					}
 					
 				});

@@ -84,23 +84,20 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
         childMap = new LinkedHashMap<String, List<String>> ();
         
         //Pushing test data into Container
-        groupHeaders.add("Sauce");
-        groupHeaders.add("Syrup");
+        groupHeaders.add("Loading Sauce");
+        groupHeaders.add("Loading Syrup");
          
         //Sample Syrup Data
         ArrayList<String> syrupList = new ArrayList<String>();
-        syrupList.add("Vanilla");
-        syrupList.add("Mint");
-        syrupList.add("Marshmellow");
+        syrupList.add("Loading");
+
         
         //Sample Sauce Data
         ArrayList<String> sauceList = new ArrayList<String>();
-        sauceList.add("Chocolate");
-        sauceList.add("Carmel");
-        sauceList.add("Dark Chocolate");
-        
-        childMap.put("Sauce", sauceList);
-        childMap.put("Syrup", syrupList);
+        sauceList.add("Loading");
+
+        childMap.put("Loading Sauce", sauceList);
+        childMap.put("Loading Syrup", syrupList);
        
         //Set menu title
         title = (TextView)findViewById(R.id.main_menu_title);
@@ -121,6 +118,9 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
         
         //Get reference to Review Order Button
 		sendSelection = (Button)findViewById(R.id.next_button);
+		
+		SendModifierRequest smr = new SendModifierRequest();
+		smr.execute("http://www.hssdevelopment.com/menu.php");
 
 		//Download Sauce/Syrup from online database via http post request
 		//SendPostRequest pt = new SendPostRequest();
@@ -190,10 +190,12 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
      * Class being built to download Sauce and Syrup from HSS development
      * Once completed, this class will download the necessary data and 
      * Set the expandable list adapter with updated sauce and syrup data
-	private class SendPostRequest extends AsyncTask<String, Void, Map<String, List<String>>>
+     */
+    
+	private class SendModifierRequest extends AsyncTask<String, Void, Map<String, List<String>>>
 	{
-	  private ArrayList<String> drinks;
-	  private Map<String, List<String>> coffeeMap;
+	  private ArrayList<String> modifier;
+	  private Map<String, List<String>> modifierMap;
 	  
 		protected Map<String, List<String>> doInBackground(String... urls) 
 		{
@@ -205,7 +207,7 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
 				try
 				{
 			        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-			        nameValuePairs.add(new BasicNameValuePair("id", "menu"));
+			        nameValuePairs.add(new BasicNameValuePair("id", "modifier"));
 			        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			        
 					HttpResponse execute = client.execute(httpPost);
@@ -216,25 +218,28 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
 				catch (Exception e)
 				{
 					e.printStackTrace();
-					coffeeMap = new LinkedHashMap<String, List<String>>();
-					return coffeeMap;
+					return new HashMap<String,List<String>> ();
 				}
 			}
 			
-			return coffeeMap;
+			return modifierMap;
 		}		
 		
 		
 		@Override
 		protected void onPostExecute(Map<String, List<String>> result)
 		{
+			//Add 
 			ArrayList<String>categories = new ArrayList<String>();
 			for(String s : result.keySet())
 			{
 				categories.add(s);
 			}
 			
-			title.setText(R.string.select_drink);
+			//Update group headers, child headers and adapter and redraw screen
+			UI_Sauce_Syrup_Menu.this.expListAdapter.setChildMap(modifierMap);
+			UI_Sauce_Syrup_Menu.this.expListAdapter.setParentList(categories);
+			UI_Sauce_Syrup_Menu.this.expListAdapter.notifyDataSetChanged();
 		}
 		
 		private void processStream(InputStream inputStream) 
@@ -242,11 +247,12 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
 			XmlPullParserFactory factory;
 			String name = "";
 			String category = "";
-			String results = "";
-			coffeeMap = new LinkedHashMap<String, List<String>>();
-			drinks = new ArrayList<String>();
+
+			modifierMap = new LinkedHashMap<String, List<String>>();
+			modifier = new ArrayList<String>();
 			
-			try {
+			try 
+			{
 				factory = XmlPullParserFactory.newInstance();
 				factory.setNamespaceAware(true);
 				XmlPullParser xpp = factory.newPullParser();
@@ -262,16 +268,16 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
 
 						while (!(eventType == XmlPullParser.END_TAG && xpp.getName().equals("entry")))
 						{
-							//Process name tag
+							//Process category tag - these tags should either be "sauce" or "syrup"
 							if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("category"))
 							{
 								category = xpp.nextText();
 								
 								//If a category does not exist, create a blank array list for it
-								if(!coffeeMap.containsKey(category))
+								if(!modifierMap.containsKey(category))
 								{
 									ArrayList<String> al = new ArrayList<String>();
-									coffeeMap.put(category, al);
+									modifierMap.put(category, al);
 								}
 						
 								eventType = xpp.next();
@@ -281,30 +287,31 @@ public class UI_Sauce_Syrup_Menu extends ExpandableListActivity{
 							if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name"))
 							{
 								name = xpp.nextText();
-								drinks = (ArrayList<String>) coffeeMap.get(category);
-								drinks.add(name);
+								modifier = (ArrayList<String>) modifierMap.get(category);
+								modifier.add(name);
 								eventType = xpp.next();
-								//results += name + ",";
 							}
 							
-						}
-					}
+						  }
+					   }
 		
-					eventType = xpp.next();
-				}
+					   eventType = xpp.next();
+				  }
 				
 			}
 			
-			catch (XmlPullParserException e) {
-				Log.d("PULLPARSER", "Xml Pull Parser Exception", e);
+			catch (XmlPullParserException e) 
+			{
+				e.printStackTrace();
+				
 			}
 			
-			catch (IOException e){
-				Log.d("PULLPARSER", "IO Exception", e);
+			catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 
-		}
-	}
-*/
+	     }
+	 }
 }
 
